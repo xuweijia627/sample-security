@@ -17,8 +17,14 @@ public class BrowserSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        //super.configure(http);
-        http.formLogin().and().authorizeRequests().anyRequest().authenticated();
-        //http.httpBasic().and().authorizeRequests().anyRequest().authenticated();
+        http.formLogin()
+                .loginPage("/login.html")
+                .loginProcessingUrl("/authentication/form")
+                .and()
+                .authorizeRequests()
+                .antMatchers("/login.html").permitAll()
+                .anyRequest()
+                .authenticated()
+                .and().csrf().disable();
     }
 }
