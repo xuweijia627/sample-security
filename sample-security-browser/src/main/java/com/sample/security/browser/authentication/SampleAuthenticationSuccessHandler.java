@@ -21,7 +21,7 @@ public class SampleAuthenticationSuccessHandler implements AuthenticationSuccess
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response
             , Authentication authentication) throws IOException, ServletException {
 
-        log.info("登录成功:{}",authentication);
+        log.info("登录成功");
         response.setContentType("application/json;charset=UTF-8");
         response.getWriter().write(objectMapper.writeValueAsString(authentication));
     }
