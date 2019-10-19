@@ -1,3 +1,4 @@
+/*
 package com.sample.security.browser.authentication;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -27,3 +28,4 @@ public class SampleAuthenticationFailureHandler implements AuthenticationFailure
         response.getWriter().write(objectMapper.writeValueAsString(exception));
     }
 }
+*/

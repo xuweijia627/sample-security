@@ -1,3 +1,4 @@
+/*
 package com.sample.security.browser;
 
 import lombok.extern.slf4j.Slf4j;
@@ -24,3 +25,4 @@ public class MyUserDetailsService implements UserDetailsService {
         return new User(username, password, AuthorityUtils.commaSeparatedStringToAuthorityList("admin"));
     }
 }
+*/

@@ -1,4 +1,5 @@
-package com.sample.security.core;
+/*
+package com.sample.security.core.filter;
 
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -16,3 +17,4 @@ public class CustomFilter extends OncePerRequestFilter {
         filterChain.doFilter(httpServletRequest, httpServletResponse);
     }
 }
+*/
