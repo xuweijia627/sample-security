@@ -3,6 +3,7 @@ package com.sample.controller;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.sample.dto.User;
 import com.sample.dto.UserQueryCondition;
+import com.sample.exception.UserNotExistException;
 import org.apache.commons.lang.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 import org.springframework.validation.BindingResult;
@@ -22,11 +23,7 @@ import java.util.List;
 public class UserController {
 
     @PostMapping
-    public User create(@Valid @RequestBody User user, BindingResult bindingResult) {
-        if (bindingResult.hasErrors()) {
-            bindingResult.getAllErrors().stream()
-                    .forEach(error -> System.out.println(((FieldError) error).getField() + ((FieldError) error).getDefaultMessage()));
-        }
+    public User create(@Valid @RequestBody User user) {
 
         System.out.println(user.getId());
         System.out.println(user.getUsername());
@@ -72,10 +69,11 @@ public class UserController {
     @GetMapping("/{id:\\d+}")
     @JsonView(User.UserDetailView.class)
     public User getInfo(@PathVariable String id) {
-        System.out.println("进入getInfo服务");
+        throw new UserNotExistException(id);
+        /*System.out.println("进入getInfo服务");
         System.out.println(id);
         User user = new User();
         user.setUsername("tom");
-        return user;
+        return user;*/
     }
 }

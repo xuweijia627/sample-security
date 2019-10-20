@@ -16,13 +16,13 @@ public class MyConstraintValidator implements ConstraintValidator<MyConstraint, 
     private HelloService helloService;
     @Override
     public void initialize(MyConstraint constraintAnnotation) {
-        System.out.println("my validator init");
+        //System.out.println("my validator init");
     }
 
     @Override
     public boolean isValid(Object value, ConstraintValidatorContext context) {
         helloService.greeting("tom");
-        System.out.println(value);
+        //System.out.println(value);
         return false;
     }
 }
