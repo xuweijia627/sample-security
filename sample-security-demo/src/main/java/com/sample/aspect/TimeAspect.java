@@ -11,8 +11,8 @@ import java.util.Date;
  * @author xuWeiJia
  * @date 2019/10/20
  */
-@Aspect
-@Component
+//@Aspect
+//@Component
 public class TimeAspect {
 
     @Around("execution(* com.sample.controller.UserController.*(..))")

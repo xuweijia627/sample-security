@@ -1,9 +1,8 @@
-/*
 package com.sample.security.browser;
 
-import com.sample.security.browser.authentication.SampleAuthenticationFailureHandler;
-import com.sample.security.browser.authentication.SampleAuthenticationSuccessHandler;
-import com.sample.security.core.filter.CustomFilter;
+//import com.sample.security.browser.authentication.SampleAuthenticationFailureHandler;
+//import com.sample.security.browser.authentication.SampleAuthenticationSuccessHandler;
+//import com.sample.security.core.filter.CustomFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -21,13 +20,13 @@ import javax.sql.DataSource;
 @Configuration
 public class BrowserSecurityConfig extends WebSecurityConfigurerAdapter {
 
-    @Autowired
+    /*@Autowired
     private SampleAuthenticationSuccessHandler sampleAuthenticationSuccessHandler;
     @Autowired
     private SampleAuthenticationFailureHandler sampleAuthenticationFailureHandler;
     @Autowired
-    private CustomFilter customFilter;
-    @Autowired
+    private CustomFilter customFilter;*/
+    /*@Autowired
     private DataSource dataSource;
     @Autowired
     private UserDetailsService userDetailsService;
@@ -41,11 +40,16 @@ public class BrowserSecurityConfig extends WebSecurityConfigurerAdapter {
         tokenRepository.setDataSource(dataSource);
         //tokenRepository.setCreateTableOnStartup(true);
         return tokenRepository;
-    }
+    }*/
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.addFilterBefore(customFilter, UsernamePasswordAuthenticationFilter.class)
+        http.formLogin()
+                .and()
+                .authorizeRequests()
+                .anyRequest()
+                .authenticated();
+        /*http.addFilterBefore(customFilter, UsernamePasswordAuthenticationFilter.class)
                 .formLogin()
                 .loginPage("/login.html")
                 .loginProcessingUrl("/authentication/form")
@@ -61,7 +65,6 @@ public class BrowserSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/login.html").permitAll()
                 .anyRequest()
                 .authenticated()
-                .and().csrf().disable();
+                .and().csrf().disable();*/
     }
 }
-*/

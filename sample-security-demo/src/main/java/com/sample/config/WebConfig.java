@@ -25,10 +25,10 @@ public class WebConfig extends WebMvcConfigurerAdapter {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         //super.addInterceptors(registry);
-        registry.addInterceptor(timeInterceptor);
+        //registry.addInterceptor(timeInterceptor);
     }
 
-    @Bean
+    //@Bean
     public FilterRegistrationBean timeFilter(){
         FilterRegistrationBean registrationBean = new FilterRegistrationBean();
         TimeFilter timeFilter = new TimeFilter();
