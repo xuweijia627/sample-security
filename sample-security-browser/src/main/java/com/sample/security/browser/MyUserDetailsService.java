@@ -1,4 +1,3 @@
-/*
 package com.sample.security.browser;
 
 import lombok.extern.slf4j.Slf4j;
@@ -20,9 +19,9 @@ public class MyUserDetailsService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         log.info("username={}",username);
-        String password = passwordEncoder.encode("123456");
+        // passwordEncoder.encode("12345") 是在注册的时候做的, 登录时的密码是否正确由spring security去判断
+        String password = passwordEncoder.encode("12345");
         log.info("password={}",password);
         return new User(username, password, AuthorityUtils.commaSeparatedStringToAuthorityList("admin"));
     }
 }
-*/

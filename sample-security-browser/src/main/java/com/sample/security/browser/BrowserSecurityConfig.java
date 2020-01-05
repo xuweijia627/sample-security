@@ -3,6 +3,8 @@ package com.sample.security.browser;
 //import com.sample.security.browser.authentication.SampleAuthenticationFailureHandler;
 //import com.sample.security.browser.authentication.SampleAuthenticationSuccessHandler;
 //import com.sample.security.core.filter.CustomFilter;
+import com.sample.security.core.properties.SecurityConstants;
+import com.sample.security.core.properties.SecurityProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -29,12 +31,15 @@ public class BrowserSecurityConfig extends WebSecurityConfigurerAdapter {
     /*@Autowired
     private DataSource dataSource;
     @Autowired
-    private UserDetailsService userDetailsService;
+    private UserDetailsService userDetailsService;*/
     @Bean
     public PasswordEncoder passwordEncoder(){
         return new BCryptPasswordEncoder();
     }
-    @Bean
+    @Autowired
+    private SecurityProperties securityProperties;
+
+    /*@Bean
     public PersistentTokenRepository persistentTokenRepository(){
         JdbcTokenRepositoryImpl tokenRepository = new JdbcTokenRepositoryImpl();
         tokenRepository.setDataSource(dataSource);
@@ -45,13 +50,18 @@ public class BrowserSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.formLogin()
+                .loginPage(SecurityConstants.DEFAULT_UNAUTHENTICATION_URL)
+                .loginProcessingUrl("/authentication/form")
                 .and()
                 .authorizeRequests()
+                .antMatchers(SecurityConstants.DEFAULT_UNAUTHENTICATION_URL
+                        ,securityProperties.getBrowser().getSignInPage()).permitAll()
                 .anyRequest()
-                .authenticated();
+                .authenticated()
+                .and().csrf().disable(); // and().csrf().disable() 关闭跨站请求伪造防护
         /*http.addFilterBefore(customFilter, UsernamePasswordAuthenticationFilter.class)
                 .formLogin()
-                .loginPage("/login.html")
+                .loginPage("/imooc-signIn.html")
                 .loginProcessingUrl("/authentication/form")
                 .successHandler(sampleAuthenticationSuccessHandler)
                 .failureHandler(sampleAuthenticationFailureHandler)
@@ -62,7 +72,7 @@ public class BrowserSecurityConfig extends WebSecurityConfigurerAdapter {
                 .userDetailsService(userDetailsService)
                 .and()
                 .authorizeRequests()
-                .antMatchers("/login.html").permitAll()
+                .antMatchers("/imooc-signIn.html").permitAll()
                 .anyRequest()
                 .authenticated()
                 .and().csrf().disable();*/
