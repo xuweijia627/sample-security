@@ -1,8 +1,7 @@
 package com.sample.security.browser;
 
-//import com.sample.security.browser.authentication.SampleAuthenticationFailureHandler;
-//import com.sample.security.browser.authentication.SampleAuthenticationSuccessHandler;
-//import com.sample.security.core.filter.CustomFilter;
+import com.sample.security.browser.authentication.SampleAuthenticationFailureHandler;
+import com.sample.security.browser.authentication.SampleAuthenticationSuccessHandler;
 import com.sample.security.core.properties.SecurityConstants;
 import com.sample.security.core.properties.SecurityProperties;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,10 +21,11 @@ import javax.sql.DataSource;
 @Configuration
 public class BrowserSecurityConfig extends WebSecurityConfigurerAdapter {
 
-    /*@Autowired
+    @Autowired
     private SampleAuthenticationSuccessHandler sampleAuthenticationSuccessHandler;
     @Autowired
     private SampleAuthenticationFailureHandler sampleAuthenticationFailureHandler;
+    /*
     @Autowired
     private CustomFilter customFilter;*/
     /*@Autowired
@@ -52,6 +52,8 @@ public class BrowserSecurityConfig extends WebSecurityConfigurerAdapter {
         http.formLogin()
                 .loginPage(SecurityConstants.DEFAULT_UNAUTHENTICATION_URL)
                 .loginProcessingUrl("/authentication/form")
+                .successHandler(sampleAuthenticationSuccessHandler)
+                .failureHandler(sampleAuthenticationFailureHandler)
                 .and()
                 .authorizeRequests()
                 .antMatchers(SecurityConstants.DEFAULT_UNAUTHENTICATION_URL
