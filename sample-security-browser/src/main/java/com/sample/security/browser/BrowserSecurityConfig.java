@@ -4,6 +4,7 @@ import com.sample.security.browser.authentication.SampleAuthenticationFailureHan
 import com.sample.security.browser.authentication.SampleAuthenticationSuccessHandler;
 import com.sample.security.core.properties.SecurityConstants;
 import com.sample.security.core.properties.SecurityProperties;
+import com.sample.security.core.validate.code.ValidateCodeFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -49,7 +50,10 @@ public class BrowserSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.formLogin()
+        ValidateCodeFilter validateCodeFilter = new ValidateCodeFilter();
+        validateCodeFilter.setAuthenticationFailureHandler(sampleAuthenticationFailureHandler);
+
+        http.addFilterBefore(validateCodeFilter, UsernamePasswordAuthenticationFilter.class).formLogin()
                 .loginPage(SecurityConstants.DEFAULT_UNAUTHENTICATION_URL)
                 .loginProcessingUrl("/authentication/form")
                 .successHandler(sampleAuthenticationSuccessHandler)
@@ -57,7 +61,8 @@ public class BrowserSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .authorizeRequests()
                 .antMatchers(SecurityConstants.DEFAULT_UNAUTHENTICATION_URL
-                        ,securityProperties.getBrowser().getSignInPage()).permitAll()
+                        ,securityProperties.getBrowser().getSignInPage()
+                        , "/code/image").permitAll()
                 .anyRequest()
                 .authenticated()
                 .and().csrf().disable(); // and().csrf().disable() 关闭跨站请求伪造防护
