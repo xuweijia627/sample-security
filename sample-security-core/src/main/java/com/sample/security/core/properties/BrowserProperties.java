@@ -17,4 +17,6 @@ public class BrowserProperties {
     private String signInPage = SecurityConstants.DEFAULT_SIGN_IN_PAGE_URL;
 
     private LoginResponseType loginResponseType = LoginResponseType.JSON;
+
+    private int rememberMeSeconds = 3600;
 }

@@ -29,10 +29,10 @@ public class BrowserSecurityConfig extends WebSecurityConfigurerAdapter {
     /*
     @Autowired
     private CustomFilter customFilter;*/
-    /*@Autowired
-    private DataSource dataSource;
     @Autowired
-    private UserDetailsService userDetailsService;*/
+    private UserDetailsService userDetailsService;
+    @Autowired
+    private DataSource dataSource;
     @Bean
     public PasswordEncoder passwordEncoder(){
         return new BCryptPasswordEncoder();
@@ -40,13 +40,13 @@ public class BrowserSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private SecurityProperties securityProperties;
 
-    /*@Bean
+    @Bean
     public PersistentTokenRepository persistentTokenRepository(){
         JdbcTokenRepositoryImpl tokenRepository = new JdbcTokenRepositoryImpl();
         tokenRepository.setDataSource(dataSource);
         //tokenRepository.setCreateTableOnStartup(true);
         return tokenRepository;
-    }*/
+    }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -55,11 +55,17 @@ public class BrowserSecurityConfig extends WebSecurityConfigurerAdapter {
         validateCodeFilter.setSecurityProperties(securityProperties);
         validateCodeFilter.afterPropertiesSet();
 
-        http.addFilterBefore(validateCodeFilter, UsernamePasswordAuthenticationFilter.class).formLogin()
+        http.addFilterBefore(validateCodeFilter, UsernamePasswordAuthenticationFilter.class)
+                .formLogin()
                 .loginPage(SecurityConstants.DEFAULT_UNAUTHENTICATION_URL)
                 .loginProcessingUrl("/authentication/form")
                 .successHandler(sampleAuthenticationSuccessHandler)
                 .failureHandler(sampleAuthenticationFailureHandler)
+                .and()
+                .rememberMe()
+                .tokenRepository(persistentTokenRepository())
+                .tokenValiditySeconds(securityProperties.getBrowser().getRememberMeSeconds())
+                .userDetailsService(userDetailsService)
                 .and()
                 .authorizeRequests()
                 .antMatchers(SecurityConstants.DEFAULT_UNAUTHENTICATION_URL
@@ -67,7 +73,8 @@ public class BrowserSecurityConfig extends WebSecurityConfigurerAdapter {
                         , "/code/image").permitAll()
                 .anyRequest()
                 .authenticated()
-                .and().csrf().disable(); // and().csrf().disable() 关闭跨站请求伪造防护
+                .and()
+                .csrf().disable(); // and().csrf().disable() 关闭跨站请求伪造防护
         /*http.addFilterBefore(customFilter, UsernamePasswordAuthenticationFilter.class)
                 .formLogin()
                 .loginPage("/imooc-signIn.html")
