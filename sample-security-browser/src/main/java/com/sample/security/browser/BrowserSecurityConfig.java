@@ -70,7 +70,7 @@ public class BrowserSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers(SecurityConstants.DEFAULT_UNAUTHENTICATION_URL
                         ,securityProperties.getBrowser().getSignInPage()
-                        , "/code/image").permitAll()
+                        , "/code/image", "/code/sms").permitAll()
                 .anyRequest()
                 .authenticated()
                 .and()
