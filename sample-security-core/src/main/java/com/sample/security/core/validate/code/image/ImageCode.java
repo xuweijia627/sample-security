@@ -1,5 +1,6 @@
-package com.sample.security.core.validate.code;
+package com.sample.security.core.validate.code.image;
 
+import com.sample.security.core.validate.code.ValidateCode;
 import lombok.Getter;
 import lombok.Setter;
 
