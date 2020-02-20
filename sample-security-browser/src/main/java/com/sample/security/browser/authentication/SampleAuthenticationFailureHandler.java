@@ -15,7 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 @Slf4j
-@Component
+@Component("sampleAuthenticationFailureHandler")
 public class SampleAuthenticationFailureHandler extends SimpleUrlAuthenticationFailureHandler {
 
     @Autowired

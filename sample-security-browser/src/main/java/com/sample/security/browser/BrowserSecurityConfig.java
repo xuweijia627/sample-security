@@ -2,8 +2,10 @@ package com.sample.security.browser;
 
 import com.sample.security.browser.authentication.SampleAuthenticationFailureHandler;
 import com.sample.security.browser.authentication.SampleAuthenticationSuccessHandler;
+import com.sample.security.core.authentication.mobile.SmsCodeAuthenticationSecurityConfig;
 import com.sample.security.core.properties.SecurityConstants;
 import com.sample.security.core.properties.SecurityProperties;
+import com.sample.security.core.validate.code.SmsCodeFilter;
 import com.sample.security.core.validate.code.ValidateCodeFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -39,6 +41,8 @@ public class BrowserSecurityConfig extends WebSecurityConfigurerAdapter {
     }
     @Autowired
     private SecurityProperties securityProperties;
+    @Autowired
+    private SmsCodeAuthenticationSecurityConfig smsCodeAuthenticationSecurityConfig;
 
     @Bean
     public PersistentTokenRepository persistentTokenRepository(){
@@ -55,7 +59,13 @@ public class BrowserSecurityConfig extends WebSecurityConfigurerAdapter {
         validateCodeFilter.setSecurityProperties(securityProperties);
         validateCodeFilter.afterPropertiesSet();
 
-        http.addFilterBefore(validateCodeFilter, UsernamePasswordAuthenticationFilter.class)
+        SmsCodeFilter smsCodeFilter = new SmsCodeFilter();
+        smsCodeFilter.setAuthenticationFailureHandler(sampleAuthenticationFailureHandler);
+        smsCodeFilter.setSecurityProperties(securityProperties);
+        smsCodeFilter.afterPropertiesSet();
+
+        http.addFilterBefore(smsCodeFilter, UsernamePasswordAuthenticationFilter.class).
+                addFilterBefore(validateCodeFilter, UsernamePasswordAuthenticationFilter.class)
                 .formLogin()
                 .loginPage(SecurityConstants.DEFAULT_UNAUTHENTICATION_URL)
                 .loginProcessingUrl("/authentication/form")
@@ -74,23 +84,7 @@ public class BrowserSecurityConfig extends WebSecurityConfigurerAdapter {
                 .anyRequest()
                 .authenticated()
                 .and()
-                .csrf().disable(); // and().csrf().disable() 关闭跨站请求伪造防护
-        /*http.addFilterBefore(customFilter, UsernamePasswordAuthenticationFilter.class)
-                .formLogin()
-                .loginPage("/imooc-signIn.html")
-                .loginProcessingUrl("/authentication/form")
-                .successHandler(sampleAuthenticationSuccessHandler)
-                .failureHandler(sampleAuthenticationFailureHandler)
-                .and()
-                .rememberMe()
-                .tokenRepository(persistentTokenRepository())
-                .tokenValiditySeconds(3600)
-                .userDetailsService(userDetailsService)
-                .and()
-                .authorizeRequests()
-                .antMatchers("/imooc-signIn.html").permitAll()
-                .anyRequest()
-                .authenticated()
-                .and().csrf().disable();*/
+                .csrf().disable()
+                .apply(smsCodeAuthenticationSecurityConfig); // and().csrf().disable() 关闭跨站请求伪造防护
     }
 }
