@@ -40,6 +40,7 @@ public class SmsCodeAuthenticationToken extends AbstractAuthenticationToken {
 
         super.setAuthenticated(false);
     }
+
     @Override
     public Object getCredentials() {
         return null;
