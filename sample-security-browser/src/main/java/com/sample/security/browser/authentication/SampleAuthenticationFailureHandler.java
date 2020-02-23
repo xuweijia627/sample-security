@@ -3,6 +3,7 @@ package com.sample.security.browser.authentication;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sample.security.core.properties.LoginResponseType;
 import com.sample.security.core.properties.SecurityProperties;
+import com.sample.security.core.support.SimpleResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -29,7 +30,7 @@ public class SampleAuthenticationFailureHandler extends SimpleUrlAuthenticationF
         if (LoginResponseType.JSON.equals(securityProperties.getBrowser().getLoginResponseType())) {
             response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
             response.setContentType("application/json;charset=UTF-8");
-            response.getWriter().write(objectMapper.writeValueAsString(exception));
+            response.getWriter().write(objectMapper.writeValueAsString(new SimpleResponse(exception.getMessage())));
         } else {
             super.onAuthenticationFailure(request, response, exception);
         }
