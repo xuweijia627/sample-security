@@ -12,7 +12,7 @@ import org.springframework.web.context.request.ServletWebRequest;
  * @author xuWeiJia
  * @date 2020/02/16
  */
-@Component
+@Component("smsValidateCodeGenerator")
 public class SmsCodeGenerator implements ValidateCodeGenerator {
     @Autowired
     private SecurityProperties securityProperties;

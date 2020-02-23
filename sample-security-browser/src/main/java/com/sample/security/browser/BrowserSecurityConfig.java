@@ -5,7 +5,6 @@ import com.sample.security.browser.authentication.SampleAuthenticationSuccessHan
 import com.sample.security.core.authentication.mobile.SmsCodeAuthenticationSecurityConfig;
 import com.sample.security.core.properties.SecurityConstants;
 import com.sample.security.core.properties.SecurityProperties;
-import com.sample.security.core.validate.code.SmsCodeFilter;
 import com.sample.security.core.validate.code.ValidateCodeFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -15,7 +14,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.authentication.preauth.AbstractPreAuthenticatedProcessingFilter;
 import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
 
@@ -28,9 +27,6 @@ public class BrowserSecurityConfig extends WebSecurityConfigurerAdapter {
     private SampleAuthenticationSuccessHandler sampleAuthenticationSuccessHandler;
     @Autowired
     private SampleAuthenticationFailureHandler sampleAuthenticationFailureHandler;
-    /*
-    @Autowired
-    private CustomFilter customFilter;*/
     @Autowired
     private UserDetailsService userDetailsService;
     @Autowired
@@ -43,6 +39,8 @@ public class BrowserSecurityConfig extends WebSecurityConfigurerAdapter {
     private SecurityProperties securityProperties;
     @Autowired
     private SmsCodeAuthenticationSecurityConfig smsCodeAuthenticationSecurityConfig;
+    @Autowired
+    private ValidateCodeFilter validateCodeFilter;
 
     @Bean
     public PersistentTokenRepository persistentTokenRepository(){
@@ -54,18 +52,8 @@ public class BrowserSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        ValidateCodeFilter validateCodeFilter = new ValidateCodeFilter();
-        validateCodeFilter.setAuthenticationFailureHandler(sampleAuthenticationFailureHandler);
-        validateCodeFilter.setSecurityProperties(securityProperties);
-        validateCodeFilter.afterPropertiesSet();
 
-        SmsCodeFilter smsCodeFilter = new SmsCodeFilter();
-        smsCodeFilter.setAuthenticationFailureHandler(sampleAuthenticationFailureHandler);
-        smsCodeFilter.setSecurityProperties(securityProperties);
-        smsCodeFilter.afterPropertiesSet();
-
-        http.addFilterBefore(smsCodeFilter, UsernamePasswordAuthenticationFilter.class).
-                addFilterBefore(validateCodeFilter, UsernamePasswordAuthenticationFilter.class)
+        http.addFilterBefore(validateCodeFilter, AbstractPreAuthenticatedProcessingFilter.class)
                 .formLogin()
                 .loginPage(SecurityConstants.DEFAULT_UNAUTHENTICATION_URL)
                 .loginProcessingUrl("/authentication/form")

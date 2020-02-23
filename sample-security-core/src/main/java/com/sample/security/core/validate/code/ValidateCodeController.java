@@ -8,7 +8,6 @@ import org.springframework.web.context.request.ServletWebRequest;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.Map;
 
 /**
  * @author xuWeiJia
@@ -18,10 +17,11 @@ import java.util.Map;
 public class ValidateCodeController {
 
     @Autowired
-    private Map<String, ValidateCodeProcessor> validateCodeProcessors;
+    private ValidateCodeProcessorHolder validateCodeProcessorHolder;
 
     @GetMapping("/code/{type}")
-    public void createCode(@PathVariable("type") String type, HttpServletRequest request, HttpServletResponse response) throws Exception {
-        validateCodeProcessors.get(type + "CodeProcessor").create(new ServletWebRequest(request, response));
+    public void createCode(@PathVariable("type") String type, HttpServletRequest request, HttpServletResponse response)
+            throws Exception {
+        validateCodeProcessorHolder.findValidateCodeProcessor(type).create(new ServletWebRequest(request, response));
     }
 }
