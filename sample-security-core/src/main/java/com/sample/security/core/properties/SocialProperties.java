@@ -10,6 +10,6 @@ import lombok.Setter;
 @Getter
 @Setter
 public class SocialProperties {
-
+    private String filterProcessesUrl = "/auth";
     private QQProperties qq = new QQProperties();
 }
