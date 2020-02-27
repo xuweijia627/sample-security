@@ -55,6 +55,8 @@ public class QQUserInfo {
      * 	大小为100×100像素的QQ空间头像URL。
      */
     private String figureurl_2;
+
+    private String figureurl_qq;
     /**
      * 	大小为40×40像素的QQ头像URL。
      */
@@ -67,6 +69,8 @@ public class QQUserInfo {
      * 	性别。 如果获取不到则默认返回”男”
      */
     private String gender;
+
+    private Integer gender_type;
     /**
      * 	标识用户是否为黄钻用户（0：不是；1：是）。
      */
@@ -87,4 +91,7 @@ public class QQUserInfo {
      * 标识是否为年费黄钻用户（0：不是； 1：是）
      */
     private String is_yellow_year_vip;
+
+    private String constellation;
+    private String figureurl_type;
 }
