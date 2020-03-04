@@ -11,6 +11,7 @@ import lombok.Setter;
 @Setter
 public class BrowserProperties {
 
+    private SessionProperties session = new SessionProperties();
     private String signUpUrl = "/imooc-signUp.html";
     /**
      * 登录页面，当引发登录行为的url以html结尾时，会跳到这里配置的url上

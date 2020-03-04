@@ -1,5 +1,6 @@
 package com.sample.security.browser;
 
+import com.sample.security.browser.session.ImoocExpiredSessionStrategy;
 import com.sample.security.core.authentication.AbstractChannelSecurityConfig;
 import com.sample.security.core.authentication.mobile.SmsCodeAuthenticationSecurityConfig;
 import com.sample.security.core.properties.SecurityConstants;
@@ -14,6 +15,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
+import org.springframework.security.web.session.InvalidSessionStrategy;
+import org.springframework.security.web.session.SessionInformationExpiredStrategy;
 import org.springframework.social.security.SpringSocialConfigurer;
 
 import javax.sql.DataSource;
@@ -38,6 +41,10 @@ public class BrowserSecurityConfig extends AbstractChannelSecurityConfig {
     private ValidateCodeSecurityConfig validateCodeSecurityConfig;
     @Autowired
     private SpringSocialConfigurer imoocSocialSecurityConfig;
+    @Autowired
+    private SessionInformationExpiredStrategy sessionInformationExpiredStrategy;
+    @Autowired
+    private InvalidSessionStrategy invalidSessionStrategy;
 
     @Bean
     public PersistentTokenRepository persistentTokenRepository(){
@@ -63,14 +70,20 @@ public class BrowserSecurityConfig extends AbstractChannelSecurityConfig {
                 .userDetailsService(userDetailsService)
                 .and()
                 .sessionManagement()
-                .invalidSessionUrl("/session/invalid")
+                .invalidSessionStrategy(invalidSessionStrategy)
+                .maximumSessions(securityProperties.getBrowser().getSession().getMaximumSessions())
+                .maxSessionsPreventsLogin(securityProperties.getBrowser().getSession().isMaxSessionsPreventsLogin())
+                .expiredSessionStrategy(sessionInformationExpiredStrategy)
+                .and()
                 .and()
                 .authorizeRequests()
                 .antMatchers(SecurityConstants.DEFAULT_UNAUTHENTICATION_URL,
                         securityProperties.getBrowser().getLoginPage(),
                         SecurityConstants.DEFAULT_VALIDATE_CODE_URL_PREFIX+"/*",
                         securityProperties.getBrowser().getSignUpUrl(),
-                        "/user/regist","/session/invalid")
+                        securityProperties.getBrowser().getSession().getSessionInvalidUrl()+".json",
+                        securityProperties.getBrowser().getSession().getSessionInvalidUrl()+".html",
+                        "/user/regist")
                 .permitAll()
                 .anyRequest()
                 .authenticated()

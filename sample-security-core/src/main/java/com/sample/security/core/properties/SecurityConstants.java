@@ -53,7 +53,7 @@ public interface SecurityConstants {
 	/**
 	 * session失效默认的跳转地址
 	 */
-	String DEFAULT_SESSION_INVALID_URL = "/imooc-session-invalid.html";
+	String DEFAULT_SESSION_INVALID_URL = "/session/invalid";
 	/**
 	 * 获取第三方用户信息的url
 	 */
