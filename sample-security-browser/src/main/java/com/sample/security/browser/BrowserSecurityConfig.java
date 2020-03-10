@@ -30,10 +30,6 @@ public class BrowserSecurityConfig extends AbstractChannelSecurityConfig {
     private UserDetailsService userDetailsService;
     @Autowired
     private DataSource dataSource;
-    @Bean
-    public PasswordEncoder passwordEncoder(){
-        return new BCryptPasswordEncoder();
-    }
     @Autowired
     private SecurityProperties securityProperties;
     @Autowired

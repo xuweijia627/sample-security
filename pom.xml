@@ -8,9 +8,9 @@
     <artifactId>sample-security</artifactId>
     <version>1.0-SNAPSHOT</version>
     <modules>
-        <module>sample-security-core</module>
-        <module>sample-security-browser</module>
         <module>sample-security-app</module>
+        <module>sample-security-browser</module>
+        <module>sample-security-core</module>
         <module>sample-security-demo</module>
     </modules>
     <packaging>pom</packaging>
