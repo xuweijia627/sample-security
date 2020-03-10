@@ -1,5 +1,6 @@
 package com.sample.security.browser;
 
+import com.sample.security.browser.logout.ImoocLogoutSuccessHandler;
 import com.sample.security.browser.session.ImoocExpiredSessionStrategy;
 import com.sample.security.browser.session.ImoocInvalidSessionStrategy;
 import com.sample.security.core.properties.SecurityProperties;
@@ -7,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 import org.springframework.security.web.session.InvalidSessionStrategy;
 import org.springframework.security.web.session.SessionInformationExpiredStrategy;
 
@@ -30,5 +32,10 @@ public class BrowserSecurityBeanConfig {
     @ConditionalOnMissingBean(InvalidSessionStrategy.class)
     public InvalidSessionStrategy invalidSessionStrategy(){
         return new ImoocInvalidSessionStrategy(securityProperties.getBrowser().getSession().getSessionInvalidUrl());
+    }
+    @Bean
+    @ConditionalOnMissingBean(LogoutSuccessHandler.class)
+    public LogoutSuccessHandler logoutSuccessHandler(){
+        return new ImoocLogoutSuccessHandler(securityProperties.getBrowser().getSignOutUrl());
     }
 }
