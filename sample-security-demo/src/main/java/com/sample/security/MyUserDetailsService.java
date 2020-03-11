@@ -25,7 +25,7 @@ public class MyUserDetailsService implements UserDetailsService, SocialUserDetai
         // passwordEncoder.encode("12345") 是在注册的时候做的, 登录时的密码是否正确由spring security去判断
         String password = passwordEncoder.encode("12345");
         log.info("password={}",password);
-        return new User(username, password, AuthorityUtils.commaSeparatedStringToAuthorityList("admin"));
+        return new User(username, password, AuthorityUtils.commaSeparatedStringToAuthorityList("admin,ROLE_USER"));
     }
 
     @Override
