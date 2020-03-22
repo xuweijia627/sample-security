@@ -24,9 +24,9 @@ public class QQOAuth2Template extends OAuth2Template {
 
     @Override
     protected AccessGrant postForAccessGrant(String accessTokenUrl, MultiValueMap<String, String> parameters) {
-        log.info("获取accessToke,url={}" + accessTokenUrl);
+        log.info("获取accessToke,url={}, 参数:{}", accessTokenUrl, parameters);
         String responseStr = getRestTemplate().postForObject(accessTokenUrl, parameters, String.class);
-        log.info("获取accessToke结果：{}"+responseStr);
+        log.info("获取accessToke结果：{}", responseStr);
 
         String[] items = StringUtils.splitByWholeSeparatorPreserveAllTokens(responseStr, "&");
 
