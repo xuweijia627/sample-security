@@ -21,7 +21,7 @@ import org.springframework.social.security.SpringSocialConfigurer;
 @EnableResourceServer
 public class ImoocResourceServerConfig extends ResourceServerConfigurerAdapter {
 
-    @Autowired
+    /*@Autowired
     private AuthenticationSuccessHandler sampleAuthenticationSuccessHandler;
     @Autowired
     private AuthenticationFailureHandler sampleAuthenticationFailureHandler;
@@ -61,5 +61,5 @@ public class ImoocResourceServerConfig extends ResourceServerConfigurerAdapter {
                 .authenticated()
                 .and()
                 .csrf().disable(); // and().csrf().disable() 关闭跨站请求伪造防护
-    }
+    }*/
 }

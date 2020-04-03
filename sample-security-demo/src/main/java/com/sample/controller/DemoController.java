@@ -16,9 +16,10 @@ public class DemoController {
     }
 
     @GetMapping("/me")
-    public UserDetails me(){
+    public Authentication me(){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        return (UserDetails) authentication.getPrincipal();
+        //return (UserDetails) authentication.getPrincipal();
+        return authentication;
     }
 
     @GetMapping("/me1")
