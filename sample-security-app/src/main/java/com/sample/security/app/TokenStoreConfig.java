@@ -37,7 +37,7 @@ public class TokenStoreConfig {
         private SecurityProperties securityProperties;
 
         @Bean
-        public TokenStore redisTokenStore() {
+        public TokenStore jwtTokenStore() {
             return new JwtTokenStore(jwtAccessTokenConverter());
         }
 
