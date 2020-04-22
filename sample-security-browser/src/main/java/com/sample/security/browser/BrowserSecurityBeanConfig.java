@@ -34,6 +34,7 @@ public class BrowserSecurityBeanConfig {
         return new ImoocInvalidSessionStrategy(securityProperties.getBrowser().getSession().getSessionInvalidUrl());
     }
 
+
     /**
      * 退出成功处理
      * @return
