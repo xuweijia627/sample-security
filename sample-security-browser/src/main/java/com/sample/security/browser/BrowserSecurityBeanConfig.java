@@ -33,6 +33,11 @@ public class BrowserSecurityBeanConfig {
     public InvalidSessionStrategy invalidSessionStrategy(){
         return new ImoocInvalidSessionStrategy(securityProperties.getBrowser().getSession().getSessionInvalidUrl());
     }
+
+    /**
+     * 退出成功处理
+     * @return
+     */
     @Bean
     @ConditionalOnMissingBean(LogoutSuccessHandler.class)
     public LogoutSuccessHandler logoutSuccessHandler(){
